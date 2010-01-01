@@ -6,50 +6,49 @@
             $this = $(this);
 
             $this.click(function() {
-                var $this = $(this);
-                var target = (opts.getTarget || $.fn.undoable.getTarget).call($this);
+                var clickSource = $(this);
+                var target = (opts.getTarget || $.fn.undoable.getTarget).call($.fn.undoable, clickSource);
                 var url = opts.url;
-                var data = (opts.getPostData || $.fn.undoable.getPostData).call($this, target);
+                var data = (opts.getPostData || $.fn.undoable.getPostData).call($.fn.undoable, clickSource, target);
 
-                $.fn.undoable.postToServer.call($this, url, data, function(response) {
+                $.fn.undoable.postToServer(url, data, function(response) {
                     var undoData = $.extend(response, data);
                     target.hide();
                     target.inlineStyling = opts.inlineStyling;
-                    var undoable = (opts.showUndo || $.fn.undoable.showUndo).call(target, undoData, opts);
+                    var undoable = (opts.showUndo || $.fn.undoable.showUndo).call($.fn.undoable, target, undoData, opts);
 
                     undoable.find('.undo a').click(function() {
-                        var data = (opts.getUndoPostData || $.fn.undoable.getUndoPostData).call($this, target);
-                        $.fn.undoable.postToServer.call($this, opts.undoUrl || url, data, function() {
-                            (opts.hideUndo || $.fn.undoable.hideUndo).call(undoable, target);
-                        });
+                        var data = (opts.getUndoPostData || $.fn.undoable.getUndoPostData).call($.fn.undoable, clickSource, target, opts);
+                        $.fn.undoable.postToServer(opts.undoUrl || url, data, function() {
+                            (opts.hideUndo || $.fn.undoable.hideUndo).call($.fn.undoable, undoable, target);
+                        }, clickSource);
                         return false;
                     });
-                });
+                }, clickSource);
 
                 return false;
             });
         });
     };
 
-    $.fn.undoable.getTarget = function() {
-        var tr = this.closest('tr');
+    $.fn.undoable.getTarget = function(clickSource) {
+        var tr = clickSource.closest('tr');
         if (tr.length === 0) {
-            return this.closest('div.target');
+            return clickSource.closest('div.target');
         }
         return tr;
     };
 
-    $.fn.undoable.getPostData = function(target) {
-        return { id: this.attr('href').substr(1) };
+    $.fn.undoable.getPostData = function(clickSource, target) {
+        return { id: clickSource.attr('href').substr(1) };
     };
 
-    $.fn.undoable.getUndoPostData = function(target) {
-        return $.fn.undoable.getPostData.call(this, target);
+    $.fn.undoable.getUndoPostData = function(clickSource, target, options) {
+        return (options.getPostData || this.getPostData).call(this, clickSource, target, options);
     };
 
-    $.fn.undoable.showUndo = function(data, options) {
-        var target = this;
-        var message = (options.formatStatus || $.fn.undoable.formatStatus)(data);
+    $.fn.undoable.showUndo = function(target, data, options) {
+        var message = (options.formatStatus || this.formatStatus).call(this, data);
 
         if (target[0].tagName === 'TR') {
             var colSpan = target.children('td').length;
@@ -64,13 +63,12 @@
 
         var undoable = target.next().hide().fadeIn('slow').show();
         if (target.inlineStyling) {
-            (options.applyUndoableStyle || $.fn.undoable.applyUndoableStyle).call(undoable);
+            (options.applyUndoableStyle || $.fn.undoable.applyUndoableStyle).call($.fn.undoable, undoable);
         }
         return undoable;
     };
 
-    $.fn.undoable.hideUndo = function(target) {
-        var undoable = this;
+    $.fn.undoable.hideUndo = function(undoable, target) {
         undoable.remove();
         target.fadeIn('slow').show();
         return target;
@@ -80,13 +78,13 @@
         return '<strong class="subject">' + data.subject + '</strong> <span class="predicate">' + data.predicate + '</span>';
     };
 
-    $.fn.undoable.applyUndoableStyle = function() {
-        this.css('backgroundColor', '#e0e0e0');
-        this.css('color', '#777777');
-        var styled = this;
-        if (this[0].tagName === 'TR') {
-            styled = this.children('td');
-            this.children('td:first').css('borderLeft', 'solid 2px #bbbbbb');
+    $.fn.undoable.applyUndoableStyle = function(undoable) {
+        undoable.css('backgroundColor', '#e0e0e0');
+        undoable.css('color', '#777777');
+        var styled = undoable;
+        if (undoable[0].tagName === 'TR') {
+            styled = undoable.children('td');
+            undoable.children('td:first').css('borderLeft', 'solid 2px #bbbbbb');
         }
         else {
             styled.css('borderLeft', 'solid 2px #bbbbbb');
@@ -96,7 +94,7 @@
         styled.css('borderBottom', 'solid 1px #cccccc');
     };
 
-    $.fn.undoable.postToServer = function(url, data, success) {
+    $.fn.undoable.postToServer = function(url, data, success, clickSource) {
         if (url) {
             $.ajax({
                 url: url,

@@ -22,15 +22,22 @@ label
 	margin-bottom: 4px;
 }
 
+div.wrapper 
+{
+	outline: solid 1px #000;
+	margin: 0;
+	padding: 0;
+}
+
 table.comments
 {
 	border-collapse: collapse;
-	outline: solid 1px #000;
+	width: 100%;
 }
 
 table.comments td, table.comments th 
 {
-	padding: 4px;
+	padding: 4px;	
 	margin: 0;
 }
 
@@ -46,7 +53,7 @@ table.comments tr.body td
 
 div.comment 
 {
-	border: solid 1px;
+	border: solid 1px #000;
 	background-color: #ffe;
 	margin-bottom: 10px;
 	padding: 8px;	

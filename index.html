@@ -28,6 +28,7 @@
             <ul>
                 <li><a href="demos/div-demo.html">DIV Demo</a></li>
                 <li><a href="demos/customized-table-demo.html">Double Row TABLE Demo</a></li>
+                <li><a href="demos/table-multiple-actions.html">TABLE Multiple Actions Demo</a></li>
             </ul>
 
             
@@ -41,36 +42,38 @@
                 Click the delete link on the table row to see it in action.
             </p>
         
-            <table class="comments">
-                <thead>
-                    <tr>
-                        <th>title</th>
-                        <th>author</th>
-                        <th>date</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>This is an interesting plugin</td>
-                        <td>Bugs Bunny</td>
-                        <td>12/31/2009</td>
-                        <td><a href="#1" class="delete">delete</a></td>
-                    </tr>
-                    <tr>
-                        <td>No, it's a bit derivative. But nice try.</td>
-                        <td>Derrida</td>
-                        <td>1/1/2010</td>
-                        <td><a href="#2" class="delete">delete</a></td>
-                    </tr>
-                    <tr>
-                        <td>Writing sample data is no fun at all.</td>
-                        <td>Peter Griffin</td>
-                        <td>1/2/2010</td>
-                        <td><a href="#3" class="delete">delete</a></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="wrapper">
+                <table class="comments">
+                    <thead>
+                        <tr>
+                            <th>title</th>
+                            <th>author</th>
+                            <th>date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>This is an interesting plugin</td>
+                            <td>Bugs Bunny</td>
+                            <td>12/31/2009</td>
+                            <td><a href="#1" class="delete">delete</a></td>
+                        </tr>
+                        <tr>
+                            <td>No, it's a bit derivative. But nice try.</td>
+                            <td>Derrida</td>
+                            <td>1/1/2010</td>
+                            <td><a href="#2" class="delete">delete</a></td>
+                        </tr>
+                        <tr>
+                            <td>Writing sample data is no fun at all.</td>
+                            <td>Peter Griffin</td>
+                            <td>1/2/2010</td>
+                            <td><a href="#3" class="delete">delete</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <h3>The Code</h3>
             <p>
                 For the purposes of the demo, we left the url null in the actual 

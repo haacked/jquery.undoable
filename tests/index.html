@@ -91,7 +91,7 @@
                 var anchor = $('#thud a');
 
                 // act
-                var target = $.fn.undoable.getTarget.call(anchor);
+                var target = $.fn.undoable.getTarget(anchor);
 
                 // assert
                 ok(target[0], $('#thud')[0]);
@@ -105,7 +105,7 @@
                 var anchor = $('#qux a');
 
                 // act
-                var target = $.fn.undoable.getTarget.call(anchor);
+                var target = $.fn.undoable.getTarget(anchor);
 
                 // assert
                 ok(target[0], $('#qux tr')[0]);
@@ -156,7 +156,7 @@
                 var overriden = false;
 
                 // act
-                $.fn.undoable.showUndo.call($('#plugh tr'), {
+                $.fn.undoable.showUndo($('#plugh tr'), {
                     subject: '',
                     predicate: ''
                 }, {
@@ -177,7 +177,7 @@
                 tr.inlineStyling = true;
 
                 // act
-                $.fn.undoable.showUndo.call(tr, {
+                $.fn.undoable.showUndo(tr, {
                     subject: '',
                     predicate: ''
                 }, {
@@ -201,7 +201,7 @@
                 $.fn.undoable.applyUndoableStyle = function() { stylesApplied = true; };
                 target.inlineStyling = true;
                 // act
-                $.fn.undoable.showUndo.call(target,
+                $.fn.undoable.showUndo(target,
                     { subject: 'subj', predicate: "was foobar'd" },
                     { id: 123 });
 
@@ -222,7 +222,7 @@
                 $.fn.undoable.applyUndoableStyle = function() { stylesApplied = true; };
 
                 // act
-                target.undoable.showUndo.call(target,
+                target.undoable.showUndo(target,
                     { subject: 'subj', predicate: 'was foobar d' },
                     { id: 123 });
 
@@ -246,7 +246,7 @@
                 var target = $('#xyzzy');
 
                 // act
-                $.fn.undoable.showUndo.call(target,
+                $.fn.undoable.showUndo(target,
                     { subject: 'subj', predicate: 'was foobard' },
                     { id: 123 }, $('#xyzzy a'));
 
@@ -269,7 +269,7 @@
                 var target = $('#removable');
 
                 // act
-                $.fn.undoable.showUndo.call(target,
+                $.fn.undoable.showUndo(target,
                     { subject: 'subj', predicate: 'was foobard' },
                     { id: 123 });
 
@@ -292,7 +292,7 @@
                 var target = $('#target');
 
                 // act
-                $.fn.undoable.showUndo.call(target,
+                $.fn.undoable.showUndo(target,
                     { subject: 'subj', predicate: 'was foobar&#8217;d' },
                     { id: 123 });
 
@@ -316,7 +316,7 @@
                 $.fn.undoable.formatStatus = function() { formatted = true; };
 
                 // act
-                $.fn.undoable.showUndo.call(target,
+                $.fn.undoable.showUndo(target,
                     { subject: 'item one', predicate: 'was deleted' },
                     { id: 123 });
 
@@ -334,7 +334,7 @@
                 var target = $('#grault');
 
                 // act
-                $.fn.undoable.applyUndoableStyle.call(target);
+                $.fn.undoable.applyUndoableStyle(target);
 
                 // assert
 
@@ -360,7 +360,7 @@
                 var target = $('#tank tr');
 
                 // act
-                $.fn.undoable.applyUndoableStyle.call(target);
+                $.fn.undoable.applyUndoableStyle(target);
 
                 // assert
 
@@ -400,7 +400,7 @@
                 var target = $('#plunk tr');
 
                 // act
-                var data = $.fn.undoable.getPostData.call(clickSource, target);
+                var data = $.fn.undoable.getPostData(clickSource, target);
 
                 // assert
                 equals(data.id, 123);
@@ -414,7 +414,7 @@
                 $.fn.undoable.getPostData = function() { getPostDataCalled = true; };
 
                 // act
-                $.fn.undoable.getUndoPostData();
+                $.fn.undoable.getUndoPostData(null, null, {});
 
                 // assert
                 $.fn.undoable.getPostData = fn;
