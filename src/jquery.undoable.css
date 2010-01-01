@@ -1,8 +1,18 @@
-.undoable 
+div.undoable, tr.undoable td
 {
 	border-top: solid 2px #bbb;
 	border-left: solid 2px #ccc;
 	border-bottom: solid 1px #ccc;
 	background-color: #e0e0e0;
 	color: #777;
+}
+
+tr.undoable td.status 
+{
+	text-align: center;
+}
+
+tr.undoable td.undo 
+{
+	border-left: none;
 }

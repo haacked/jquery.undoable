@@ -22,18 +22,34 @@ label
 	margin-bottom: 4px;
 }
 
-textarea.source 
+table.comments
 {
-	width: 400px;
-	height: 100px;	
+	border-collapse: collapse;
+	outline: solid 1px #000;
 }
 
-div.preview  {
-	width: 400px;
-	min-height: 200px;
-	border: solid 1px #000;
-	background-color: #ffffec;
-	padding: 5px;
+table.comments td, table.comments th 
+{
+	padding: 4px;
+	margin: 0;
+}
+
+table.comments td 
+{
+	border-top: solid 1px #aaa;
+}
+
+table.comments tr.body td 
+{
+	border-top: solid 1px #eee;
+}
+
+div.comment 
+{
+	border: solid 1px;
+	background-color: #ffe;
+	margin-bottom: 10px;
+	padding: 8px;	
 }
 
 /* Code Syntax Styles */
