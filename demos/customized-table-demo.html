@@ -12,15 +12,12 @@
             $(function() {
                 $('a.delete').undoable({
                     inlineStyling: false,
-                    showUndo: function(target, data, options) {
-                        var undoable = this.showUndo(target, data, options);
+                    showingStatus: function(undoable) {
                         var bodyRow = undoable.next('tr');
                         bodyRow.hide().addClass('undoable').fadeIn('slow').show();
-                        return undoable;
                     },
-                    hideUndo: function(undoable, target) {
-                        this.hideUndo(undoable, target);
-                        target.next('tr').removeClass('undoable');
+                    hidingStatus: function(undoable, target) {
+                        undoable.next('tr').removeClass('undoable');
                     }
                 });
             });
@@ -106,19 +103,15 @@
 $(<span class="kwrd">function</span>() {
     $(<span class="str">'a.delete'</span>).undoable({
         inlineStyling: <span class="kwrd">false</span>,
-        showUndo: <span class="kwrd">function</span>(target, data, options) {
-            <span class="kwrd">var</span> undoable = <span class="kwrd">this</span>.showUndo(target, data, options);
+        showingStatus: <span class="kwrd">function</span>(undoable) {
             <span class="kwrd">var</span> bodyRow = undoable.next(<span class="str">'tr'</span>);
             bodyRow.hide().addClass(<span class="str">'undoable'</span>).fadeIn(<span class="str">'slow'</span>).show();
-            <span class="kwrd">return</span> undoable;
         },
-        hideUndo: <span class="kwrd">function</span>(undoable, target) {
-            <span class="kwrd">this</span>.hideUndo(undoable, target);
-            target.next(<span class="str">'tr'</span>).removeClass(<span class="str">'undoable'</span>);
+        hidingStatus: <span class="kwrd">function</span>(undoable, target) {
+            undoable.next(<span class="str">'tr'</span>).removeClass(<span class="str">'undoable'</span>);
         }
     });
-});
-</pre>
+});</pre>
             </blockquote>
             
             <h3>The Markup</h3>

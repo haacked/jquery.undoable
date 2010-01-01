@@ -20,7 +20,7 @@
                     undoable.find('.undo a').click(function() {
                         var data = (opts.getUndoPostData || $.fn.undoable.getUndoPostData).call($.fn.undoable, clickSource, target, opts);
                         $.fn.undoable.postToServer(opts.undoUrl || url, data, function() {
-                            (opts.hideUndo || $.fn.undoable.hideUndo).call($.fn.undoable, undoable, target);
+                            (opts.hideUndo || $.fn.undoable.hideUndo).call($.fn.undoable, undoable, target, opts);
                         }, clickSource);
                         return false;
                     });
@@ -61,14 +61,23 @@
             target.after('<div class="undoable ' + classes + '"><p class="status">' + message + '</p><p class="undo"><a href="#' + data.id + '">undo</a></p></div>');
         }
 
-        var undoable = target.next().hide().fadeIn('slow').show();
+        var undoable = target.next();
+
+        if (options.showingStatus) {
+            options.showingStatus(undoable);
+        }
+
+        undoable.hide().fadeIn('slow').show();
         if (target.inlineStyling) {
             (options.applyUndoableStyle || $.fn.undoable.applyUndoableStyle).call($.fn.undoable, undoable);
         }
         return undoable;
     };
 
-    $.fn.undoable.hideUndo = function(undoable, target) {
+    $.fn.undoable.hideUndo = function(undoable, target, options) {
+        if (options.hidingStatus) {
+            options.hidingStatus(undoable, target);
+        }
         undoable.remove();
         target.fadeIn('slow').show();
         return target;
