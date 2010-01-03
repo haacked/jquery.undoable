@@ -47,6 +47,26 @@
 
             module("When clicked");
 
+            test("anchor tag is disabled", function() {
+                // arrange
+                $('body').append('<div id="barbar" style="display: none;"><a href="#" class="delete">Delete</a></div>');
+                var fn = $.fn.undoable.getTarget;
+                $.fn.undoable.getTarget = function() {
+                    return $('#barbar');
+                };
+                $('#barbar a.delete').undoable({
+                    getPostData: function() { }
+                });
+
+                // act
+                $('#barbar a.delete').click();
+
+                // assert
+                equals($('#barbar a.delete:disabled')[0], $('#barbar a.delete')[0]);
+                $.fn.undoable.getTarget = fn;
+                $('#barbar').remove();
+            });
+
             test("target is located", function() {
                 // arrange
                 $('body').append('<div id="bar" style="display: none;"></div>');
@@ -81,6 +101,23 @@
                 $.fn.undoable.getPostData = fn;
                 $.fn.undoable.getTarget = fnTarget;
                 $('#beernuts').remove();
+            });
+
+            module("when undo clicked");
+
+            test("undo link disabled", function() {
+                // arrange
+                $('body').append('<div id="goober" style="display: none;" class="target"><a href="#123" class="delete">hide</a></div>');
+                $('#goober a.delete').undoable().click();
+
+                // act
+                $('.undo a').click();
+
+                // assert
+                equals($('#goober .undo a:disabled')[0], $('#goober .undo a:disabled')[0]);
+                equals($('#goober a.delete:disabled').length, 0);
+                $('#goober').remove();
+                
             });
 
             module("getTarget on an anchor tag");
