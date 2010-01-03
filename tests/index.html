@@ -272,7 +272,7 @@
 
             module("showUndo");
 
-            test("when target is not tr, creates new sibling empty element", function() {
+            test("when target is not TR, creates new sibling empty element", function() {
                 // arrange
                 $('body').append('<div id="xyzzy" style="display: none;"> \
                     <p> \
@@ -294,6 +294,30 @@
                 ok(status.hasClass('undoable'));
                 status.remove();
             });
+
+            test("when target is not TR and not DIV, creates new sibling empty element", function() {
+                // arrange
+                $('body').append('<li id="listylist" class="target"> \
+                    <p> \
+                        stuff \
+                    </p>\
+                        <a href="#123" class="delete">delete</a>\
+                    </li>');
+                var target = $('#listylist');
+
+                // act
+                $.fn.undoable.showUndo(target,
+                    { subject: 'subj', predicate: 'was foobard' },
+                    { id: 123 }, $('#listylist a.delete'));
+
+                // assert
+                var status = target.next('li');
+                $('#listylist').remove();
+                ok(status);
+                ok(status.hasClass('undoable'));
+                status.remove();
+            });
+
 
             test("when target is not tr, status has undo link", function() {
                 // arrange

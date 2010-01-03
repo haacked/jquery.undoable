@@ -62,7 +62,7 @@
         else {
             var tagName = target[0].tagName;
             var classes = target.attr('class');
-            target.after('<div class="undoable ' + classes + '"><p class="status">' + message + '</p><p class="undo"><a href="#' + data.id + '">undo</a></p></div>');
+            target.after('<' + tagName + ' class="undoable ' + classes + '"><p class="status">' + message + '</p><p class="undo"><a href="#' + data.id + '">undo</a></p></' + tagName + '>');
         }
 
         var undoable = target.next();
