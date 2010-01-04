@@ -38,7 +38,7 @@
     $.fn.undoable.getTarget = function(clickSource) {
         var tr = clickSource.closest('tr');
         if (tr.length === 0) {
-            return clickSource.closest('div.target');
+            return clickSource.closest('.target');
         }
         return tr;
     };
@@ -56,8 +56,7 @@
 
         if (target[0].tagName === 'TR') {
             var colSpan = target.children('td').length;
-            target.after('<tr class="undoable"><td class="status" colspan="' + (colSpan - 1) + '">'
-                    + message + '</td><td class="undo"><a href="#' + data.id + '">undo</a></td></tr>');
+            target.after('<tr class="undoable"><td class="status" colspan="' + (colSpan - 1) + '">' + message + '</td><td class="undo"><a href="#' + data.id + '">undo</a></td></tr>');
         }
         else {
             var tagName = target[0].tagName;
