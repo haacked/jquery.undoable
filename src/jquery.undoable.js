@@ -7,7 +7,7 @@
 
             $this.click(function() {
                 var clickSource = $(this);
-                clickSource.attr('disabled', 'disabled');
+                clickSource.attr('disabled', true);
                 var target = (opts.getTarget || $.fn.undoable.getTarget).call($.fn.undoable, clickSource);
                 var url = opts.url;
                 var data = (opts.getPostData || $.fn.undoable.getPostData).call($.fn.undoable, clickSource, target);

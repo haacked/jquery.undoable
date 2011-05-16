@@ -3,7 +3,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="../css/qunit.css" type="text/css"/>
-    <script type="text/javascript" src="../lib/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../lib/jquery-1.6.0.min.js"></script>
     <script type="text/javascript" src="../lib/qunit.js"></script>
     <script type="text/javascript" src="../src/jquery.undoable.js"></script>
     <script type="text/javascript">
@@ -50,6 +50,7 @@
             test("anchor tag is disabled", function() {
                 // arrange
                 $('body').append('<div id="barbar" style="display: none;"><a href="#" class="delete">Delete</a></div>');
+                equals($('#barbar a').prop('disabled'), false);
                 var fn = $.fn.undoable.getTarget;
                 $.fn.undoable.getTarget = function() {
                     return $('#barbar');
@@ -62,7 +63,8 @@
                 $('#barbar a.delete').click();
 
                 // assert
-                equals($('#barbar a.delete:disabled')[0], $('#barbar a.delete')[0]);
+                equals($('#barbar a').prop('disabled'), true);
+                equals($('#barbar a').attr('disabled'), 'disabled');
                 $.fn.undoable.getTarget = fn;
                 $('#barbar').remove();
             });
