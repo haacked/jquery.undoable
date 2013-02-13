@@ -14,9 +14,9 @@
 
                 $.fn.undoable.postToServer(url, data, function(response) {
                     var undoData = $.extend(response, data);
-                    target.hide();
                     target.inlineStyling = opts.inlineStyling;
                     var undoable = (opts.showUndo || $.fn.undoable.showUndo).call($.fn.undoable, target, undoData, opts);
+                    target.hide();
 
                     undoable.find('.undo a').click(function() {
                         $(this).attr('disabled', 'disabled');
@@ -60,7 +60,7 @@
         }
         else {
             var tagName = target[0].tagName;
-            var classes = target.attr('class');
+            var classes = target.attr('class') || "";
             target.after('<' + tagName + ' class="undoable ' + classes + '"><p class="status">' + message + '</p><p class="undo"><a href="#' + data.id + '">undo</a></p></' + tagName + '>');
         }
 
