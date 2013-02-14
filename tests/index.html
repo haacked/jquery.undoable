@@ -170,6 +170,25 @@
                 ok(overriden);
             });
 
+            test("allows overriding the hideUndo method", function() {
+                // arrange
+                $('body').append('<table id="john" style="display: none;"> \
+                    <tr><td><a href="#">remove</a></td></tr></table>');
+                var overriden = false;
+                $('#john a').undoable({
+                    getTarget: function() { return $('#john tr'); },
+                    hideUndo: function() { overriden = true; }
+                });
+
+                // act
+                $('#john a').click();
+                $('#john tr.undoable a').click();
+
+                // assert
+                ok(overriden);
+                $('#john').remove();
+            });
+
             test("allows overriding the showUndo method", function() {
                 // arrange
                 $('body').append('<table id="jane" style="display: none;"> \
@@ -226,6 +245,49 @@
                 // assert
                 $('#quux').remove();
                 ok(overriden);
+            });
+
+            test("allow specifying showingStatus", function() {
+                // arrange
+                $('body').append('<table id="splat"><tbody> \
+                    <tr><td>content content</td><td><a href="#" class="delete">del</a></td></tr> \
+                    </tbody></table>');
+                var tr = $('#splat tr');
+                var invoked = false;
+                var trDisplay;
+
+                // act
+                $.fn.undoable.showUndo(tr, { } , {
+                    showingStatus: function(undoable) {
+                        invoked=true;
+                        trDisplay = undoable.prev().is(":visible");
+                    }
+                });
+
+                // assert
+                ok(invoked);
+                ok(trDisplay);
+                $('#splat').remove();
+             });
+
+            test("allow specifying hidingStatus", function() {
+                // arrange
+                var invoked = false;
+                $('body').append('<table id="whomp"><tbody> \
+                    <tr><td>content content</td><td><a href="#" class="delete">del</a></td></tr> \
+                    </tbody></table>');
+                $('#whomp a').undoable({
+                    hidingStatus: function() { invoked=true; }
+                });
+
+                // act
+                $('#whomp a').click();
+                $('#whomp tr.undoable a').click();
+
+                // assert
+                ok(invoked);
+                $('#whomp').remove();
+
             });
 
             module('showUndo');
@@ -363,6 +425,21 @@
                 $('#corge').remove();
                 ok(target.next('tr'));
                 equals(target.next('tr').children('td:first').attr('colspan'), '2');
+            });
+
+            test("when target has no class attr, don't used 'undefined'", function() {
+                // arrange
+                var missingUndefined;
+                $('body').append('<div id="whipple"><div>stuff <a href="#">del</a></div></div>');
+                var target = $('#whipple div');
+
+                // act
+                $.fn.undoable.showUndo(target, { }, { });
+                missingUndefined = $("#whipple div.undoable").attr("class").indexOf("undefined")==-1
+
+                // assert
+                ok(missingUndefined);
+                $("#whipple").remove();
             });
 
             test("showUndo calls formatMessage", function() {
