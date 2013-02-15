@@ -44,7 +44,8 @@
     };
 
     $.fn.undoable.getPostData = function(clickSource, target) {
-        return { id: clickSource.attr('href').substr(1) };
+        var href = clickSource.attr('href');
+        return { id: href.substring(href.indexOf('#')+1) };
     };
 
     $.fn.undoable.getUndoPostData = function(clickSource, target, options) {
