@@ -7,7 +7,7 @@
 
             $this.click(function() {
                 var clickSource = $(this);
-                clickSource.attr('disabled', true);
+                clickSource.prop('disabled', true);
                 var target = (opts.getTarget || $.fn.undoable.getTarget).call($.fn.undoable, clickSource);
                 var url = opts.url;
                 var data = (opts.getPostData || $.fn.undoable.getPostData).call($.fn.undoable, clickSource, target);
@@ -19,12 +19,12 @@
                     target.hide();
 
                     undoable.find('.undo a').click(function() {
-                        $(this).attr('disabled', 'disabled');
+                        $(this).prop('disabled', true);
                         
                         var data = (opts.getUndoPostData || $.fn.undoable.getUndoPostData).call($.fn.undoable, clickSource, target, opts);
                         $.fn.undoable.postToServer(opts.undoUrl || url, data, function() {
                             (opts.hideUndo || $.fn.undoable.hideUndo).call($.fn.undoable, undoable, target, opts);
-                            clickSource.removeAttr('disabled');
+                            clickSource.prop('disabled', false);
                         }, clickSource);
                         return false;
                     });
@@ -44,7 +44,8 @@
     };
 
     $.fn.undoable.getPostData = function(clickSource, target) {
-        return { id: clickSource.attr('href').substr(1) };
+        var href = clickSource.attr('href');
+        return { id: href.substring(href.indexOf('#')+1) };
     };
 
     $.fn.undoable.getUndoPostData = function(clickSource, target, options) {

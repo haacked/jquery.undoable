@@ -50,7 +50,8 @@
             test("anchor tag is disabled", function() {
                 // arrange
                 $('body').append('<div id="barbar" style="display: none;"><a href="#" class="delete">Delete</a></div>');
-                equals($('#barbar a').prop('disabled'), false);
+                // IE says false, Chrome says undefined, allow either
+                ok(!$('#barbar a').prop('disabled'));
                 var fn = $.fn.undoable.getTarget;
                 $.fn.undoable.getTarget = function() {
                     return $('#barbar');
@@ -64,7 +65,6 @@
 
                 // assert
                 equals($('#barbar a').prop('disabled'), true);
-                equals($('#barbar a').attr('disabled'), 'disabled');
                 $.fn.undoable.getTarget = fn;
                 $('#barbar').remove();
             });
