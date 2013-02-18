@@ -52,9 +52,7 @@
         return (options.getPostData || this.getPostData).call(this, clickSource, target, options);
     };
 
-    $.fn.undoable.showUndo = function(target, data, options) {
-        var message = (options.formatStatus || this.formatStatus).call(this, data);
-
+    $.fn.undoable.createUndoable = function(target, data, message) {
         if (target[0].tagName === 'TR') {
             var colSpan = target.children('td').length;
             target.after('<tr class="undoable"><td class="status" colspan="' + (colSpan - 1) + '">' + message + '</td><td class="undo"><a href="#' + data.id + '">undo</a></td></tr>');
@@ -64,8 +62,12 @@
             var classes = target.attr('class') || "";
             target.after('<' + tagName + ' class="undoable ' + classes + '"><p class="status">' + message + '</p><p class="undo"><a href="#' + data.id + '">undo</a></p></' + tagName + '>');
         }
+        return target.next();
+    }
 
-        var undoable = target.next();
+    $.fn.undoable.showUndo = function(target, data, options) {
+        var message = (options.formatStatus || this.formatStatus).call(this, data);
+        var undoable = (options.createUndoable || $.fn.undoable.createUndoable).call($.fn.undoable, target, data, message);
 
         if (options.showingStatus) {
             options.showingStatus(undoable);
