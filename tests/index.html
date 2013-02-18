@@ -226,6 +226,21 @@
                 ok(overriden);
             });
 
+            test("allows overriding the createUndoable method", function() {
+                // arrange
+                $('body').append('<div id="yank" class="target"><div><p><a href="#123">close</a></p></div></div>');
+
+                // act
+                $.fn.undoable.showUndo($('#yank div'), { }, {
+                    formatStatus: function(undoable, data, message) {
+                        return '<div class="undoable customYankStatus">Custom create: ' + message + '</div>'; }
+                });
+
+                // assert
+                ok($('#yank div.undoable').hasClass('customYankStatus'));
+                $('#yank').remove();
+            });
+
             test("allows overriding the applyUndoableStyle method", function() {
                 // arrange
                 $('body').append('<table id="quux" style="display: none;"> \
